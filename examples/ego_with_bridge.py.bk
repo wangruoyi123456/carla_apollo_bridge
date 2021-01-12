@@ -91,7 +91,7 @@ class World(object):
         self.sensor_manager = None
         self._weather_presets = find_weather_presets()
         self._weather_index = 0
-        self._actor_filter = 'vehicle.lincoln.mkz2017'
+        self._actor_filter = 'vehicle..bmw.isetta'
         self._gamma = args.gamma
         self.restart()
         self.recording_enabled = False
@@ -122,7 +122,10 @@ class World(object):
             self.player = self.world.try_spawn_actor(blueprint, spawn_point)
         while self.player is None:
             spawn_points = self.map.get_spawn_points()
-            spawn_point = random.choice(spawn_points) if spawn_points else carla.Transform()
+            #spawn_point = random.choice(spawn_points) if spawn_points else carla.Transform()
+            point_self = spawn_points[6]
+            #point_self.location.y +=6.0
+            spawn_point = point_self
             self.player = self.world.try_spawn_actor(blueprint, spawn_point)
         # Set up the sensors.
         # disable collision sensor due to a bug: 
@@ -130,7 +133,7 @@ class World(object):
         # may be related to: https://github.com/carla-simulator/carla/issues/1399
         # self.collision_sensor = CollisionSensor(self.player)
         self.lane_invasion_sensor = LaneInvasionSensor(self.player)
-        self.gnss_sensor = GnssSensor(self.player)
+        #self.gnss_sensor = GnssSensor(self.player)
         self.sensor_manager = SensorManager(self.player)
         actor_type = get_actor_display_name(self.player)
 
